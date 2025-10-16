@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" oncontextmenu="return false" oncopy="return false">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Secure English Quiz v6.10 · Passive & Relatives</title>
+<style>
+  * { -webkit-tap-highlight-color: transparent; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden;
+    background: radial-gradient(1200px 800px at 20% 10%, #0a2a6c 0%, transparent 50%),
+               radial-gradient(1400px 900px at 80% 90%, #0b4aa6 0%, transparent 50%),
+               linear-gradient(135deg, #081a3a, #0b2f5a 60%, #0b65c7);
+    font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #f6f9ff; }
+  #app { position: relative; z-index: 1; display: grid; place-items: center; height: 100%; padding: 16px; }
+  .card { width: min(980px, 96vw); min-height: 66vh; background: rgba(8, 18, 40, 0.55); backdrop-filter: blur(12px); border-radius: 26px;
+          box-shadow: 0 24px 70px rgba(0,0,0,0.45); border: 1px solid rgba(140,170,255,0.2); position: relative; overflow: hidden; }
+  .progress-wrap { position: absolute; top: 0; left: 0; width: 100%; height: 10px; background: rgba(255,255,255,0.08); overflow: hidden; }
+  .progress { height: 100%; width: 0%; background: linear-gradient(90deg, #00c2ff, #00ffbf, #a06bff, #ff3fa4);
+              background-size: 300% 100%; animation: flow 3s linear infinite; box-shadow: 0 0 16px rgba(0,255,255,0.75), 0 0 28px rgba(75,0,255,0.4);
+              transition: width 600ms ease; }
+  @keyframes flow { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+  .inner { padding: 22px clamp(18px, 3vw, 40px) 30px; display: grid; grid-template-rows: auto 1fr auto; gap: 12px; }
+  .title { font-size: clamp(20px, 2.8vw, 30px); font-weight: 800; text-align: center; margin-top: 6px; text-shadow: 0 3px 12px rgba(0,0,0,.4); }
+  .subtitle { font-size: clamp(14px, 2.2vw, 18px); text-align: center; opacity: .96; margin-top: -6px; }
+  .pill { margin-top: 6px; padding: 8px 12px; border-radius: 14px; display:inline-block;
+          background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.06));
+          border: 1px solid rgba(255,255,255,0.18); box-shadow: inset 0 0 14px rgba(0,0,0,0.22); }
+  .rules { text-align:center; }
+  .guide { text-align:center; }
+  .qbox { margin-top: 8px; padding: 14px; border-radius: 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18);
+          font-size: clamp(16px, 3vw, 22px); text-align: center; line-height: 1.35; word-wrap: break-word; }
+  .ctx { margin-top: 4px; font-size: clamp(13px,2vw,16px); opacity: .9; color: #cfe7ff; text-align:center; }
+  .pattern { margin-top: 2px; font-size: clamp(12px,1.8vw,15px); opacity: .9; color: #ffd7a8; text-align:center; }
+  .options { margin-top: 10px; display: grid; gap: 12px; }
+  .btn { display: block; width: 100%; border: none; outline: none; padding: clamp(14px, 4.5vw, 18px); border-radius: 18px; font-size: clamp(16px, 2.8vw, 20px); font-weight: 800; color: #061726;
+         background: linear-gradient(135deg, #e5f0ff, #e3ffe8); box-shadow: 0 14px 26px rgba(0,0,0,.25), inset 0 -6px 12px rgba(0,0,0,.08); cursor: pointer; }
+  .footer { margin-top: 6px; display: grid; place-items: center; min-height: 60px; font-weight: 800; }
+  .ok { color: #00ffb7; text-shadow: 0 0 10px rgba(0,255,183,.95); } .bad { color: #ff5b6b; text-shadow: 0 0 12px rgba(255,90,107,1); }
+  .why { margin-top: 4px; opacity: .96; font-weight: 700; }
+  .correctShow { margin-top: 3px; font-weight: 700; opacity: .95; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 6px; }
+  .colBox { padding: 12px; border-radius: 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.22); min-height: 110px; }
+  .colBox b { color: #a6c8ff; }
+  .chip { display: inline-block; margin: 6px; padding: 10px 14px; border-radius: 999px; background: linear-gradient(135deg, #ff8ae4, #7aa7ff); color: #061726; font-weight: 800;
+          box-shadow: 0 8px 18px rgba(0,0,0,0.28); cursor: pointer; transition: transform .06s ease, filter .2s ease; }
+  .chip:active { transform: scale(0.96); } .chip.sel { outline: 3px solid #00f0ff; filter: brightness(1.06); }
+  .pairArea { margin-top: 8px; padding: 8px; border-radius: 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.22); min-height: 40px; text-align: center; font-weight: 700; }
+  .pairTag { display: inline-block; margin: 6px; padding: 6px 10px; border-radius: 12px; background: linear-gradient(135deg, #00f0ff, #66ffc1); color: #06293b; font-weight: 800; box-shadow: 0 6px 16px rgba(0,0,0,0.18); }
+  .timer { text-align:center; margin-top:4px; font-weight:800; opacity:.9; }
+  .buildArea, .poolArea { padding: 10px; min-height: 56px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.22); }
+  .buildArea { background: rgba(255,255,255,0.12); } .poolArea  { background: rgba(255,255,255,0.08); margin-top: 8px; }
+  .token { display: inline-block; margin: 6px; padding: 10px 14px; border-radius: 12px; background: linear-gradient(135deg, #ffcf6b, #ff7c7c); color: #061726; font-weight: 800; box-shadow: 0 8px 18px rgba(0,0,0,0.28); cursor: pointer; }
+  .controls { margin-top: 8px; display: flex; gap: 10px; justify-content: center; }
+  .smallBtn { padding: 10px 14px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; background: linear-gradient(135deg, #b3f4ff, #e9b3ff); color: #06293b; box-shadow: 0 8px 18px rgba(0,0,0,.22); }
+  #securityOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.98); color: #ff4d4f; z-index: 9999; display: none; align-items: center; justify-content: center; text-align: center; font-size: clamp(18px, 3.2vw, 28px); font-weight: 800; padding: 24px; }
+  #final { position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; text-align: center; padding: 24px; }
+  .final-card { background: rgba(16,30,60,0.7); border: 1px solid rgba(140,170,255,0.25); border-radius: 22px; padding: 24px 20px; max-width: 560px; margin: auto; box-shadow: 0 20px 45px rgba(0,0,0,0.45); }
+  .final-card h2 { margin: 0 0 8px 0; font-size: clamp(20px, 3.4vw, 32px); }
+  .final-card p { margin: 0; font-size: clamp(18px, 3vw, 26px); font-weight: 800; }
+  @media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body ondragstart="return false" onselectstart="return false">
+
+<div id="app">
+  <div class="card" id="card" draggable="false">
+    <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+    <div class="inner">
+      <div>
+        <div class="title">Secure English Quiz</div>
+        <div class="subtitle">Passive Voice · Relative Pronouns (who/which/where/when/whose)</div>
+        <div class="pill rules" id="rules">Passive: <b>is/are</b> · <b>was/were</b> + Vpp. Relative: who/which/where/when/whose.</div>
+        <div class="pill guide" id="guide">Select, match, or build. One info strip below gives all needed context.</div>
+        <div class="qbox" id="question" draggable="false">Press “Start” to begin.</div>
+        <div class="ctx" id="contextLine"></div>
+        <div class="pattern" id="patternLine"></div>
+      </div>
+      <div class="options" id="options">
+        <button id="startBtn" class="btn" onclick="startQuiz()" role="button" tabindex="0" aria-label="Start the quiz">Start</button>
+      </div>
+      <div class="footer" id="feedback"></div>
+    </div>
+    <div id="final">
+      <div class="final-card">
+        <h2>Quiz Completed</h2>
+        <p id="finalScore">Your final score is 0.0 / 5.0</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="securityOverlay">⚠️ Security Alert</div>
+
+<script>
+(function(){
+// expose startQuiz globally at the end
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; };
+const sampleUnique=(arr, n)=>{ const pool=[...arr]; const out=[]; while(out.length<n && pool.length){ const i=Math.floor(Math.random()*pool.length); out.push(pool.splice(i,1)[0]); } return out; };
+const uniqueByText = arr => { const seen=new Set(); return arr.filter(o=>{ if(seen.has(o.text)) return false; seen.add(o.text); return true; }); };
+const makeUniqueMC = gen => { let tries=0; while(tries<15){ const it=gen(); if(Array.isArray(it.options)){ const u=uniqueByText(it.options); if(u.length===it.options.length){ return it; } } tries++; } return gen(); };
+
+const agents=['the chef','the engineer','the teacher','the manager','the students'];
+const singNP=['The door','The report','The website','The museum','The cake','The device','The letter','The car','The system','The painting'];
+const plurNP=['The cars','The emails','The houses','The phones','The books','The windows','The letters','The bikes','The systems','The paintings'];
+const tPast=['yesterday','last week','in 2010','last night','two days ago'];
+const tPres=['every day','each week','on Mondays','usually'];
+
+function makePassiveMC(){
+  const present=Math.random()<0.5, plural=Math.random()<0.5;
+  const np=plural?pick(plurNP):pick(singNP);
+  const be=present?(plural?'are':'is'):(plural?'were':'was');
+  const vpp=pick(['repaired','opened','written','designed','cleaned','delivered','made','found','painted','sent']);
+  const agent=present?(Math.random()<0.6?` by ${pick(agents)}`:''):` by ${pick(agents)}`;
+  const time=present?pick(tPres):pick(tPast);
+  const end=Math.random()<0.7?` ${time}`:'';
+  const correct=`${np} ${be} ${vpp}${agent}${end}.`;
+  const wrongTenseBe=present?(plural?'were':'was'):(plural?'are':'is');
+  const wrongTense=`${np} ${wrongTenseBe} ${vpp}${agent}${end}.`;
+  const wrongNumberBe=present?(plural?'is':'are'):(plural?'was':'were');
+  const wrongNumber=`${np} ${wrongNumberBe} ${vpp}${agent}${end}.`;
+  const options=shuffle(uniqueByText([
+    {text: correct, why:'Matches tense and number.'},
+    {text: wrongTense, why:'Wrong tense for the time clue.'},
+    {text: wrongNumber, why:'Wrong BE form for the noun number.'}
+  ]));
+  const context=`Context: ${present?'PRESENT':'PAST'} • ${plural?'PLURAL':'SINGULAR'}${end?` • Clue: "${time}"`:''}`;
+  return {type:'mc', domain:'passive', prompt:'Choose the only sentence that fits the context.', options, correct, context};
+}
+
+function makeRelativeMC(){
+  const templates=[
+    {base:'I like the book which is blue.', type:'thing'},
+    {base:'This is the park where we play.', type:'place'},
+    {base:'Monday is the day when we meet.', type:'time'},
+    {base:'The boy whose bike is new smiles.', type:'possession'},
+    {base:'This is the boy who plays soccer.', type:'person'}
+  ];
+  const item=pick(templates);
+  const stem=item.base.replace(/\b(who|which|where|when|whose)\b/i,'___');
+  const answer=item.base.match(/\b(who|which|where|when|whose)\b/i)[0].toLowerCase();
+  const pool=['who','which','where','when','whose'].filter(x=>x!==answer);
+  const distract=shuffle(pool).slice(0,2);
+  const mapRel={person:'WHO', thing:'WHICH', place:'WHERE', time:'WHEN', possession:'WHOSE'};
+  const opts=[answer, ...distract].map(o=>({text: stem.replace('___', o), why: o===answer?'Correct pronoun.':`Wrong: Use ${mapRel[item.type]}.`}));
+  const options=shuffle(uniqueByText(opts));
+  return {type:'mc', domain:'relative', prompt:'Choose the correct relative pronoun.', options, correct:item.base, context:`Context: Use ${mapRel[item.type]}.`};
+}
+
+function makeReadingPassive(){
+  const place=pick(['the city museum','our school','the local library','the main park']);
+  const obj=pick(['the old door','the website','the report','the lights']);
+  const agent=pick(['the technician','the team','the manager']);
+  const time=pick(['yesterday','every week','last night']);
+  const bePast=(time.includes('last')||time==='yesterday');
+  const isPlural=/s$/.test(obj);
+  const be=bePast?(isPlural?'were':'was'):(isPlural?'are':'is');
+  const vpp=pick(['repaired','checked','cleaned']);
+  const correct=`${obj[0].toUpperCase()+obj.slice(1)} ${be} ${vpp} by ${agent} ${time}.`;
+  const wrong1=correct.replace(/\b(is|are|was|were)\b/,m=>({is:'are',are:'is',was:'were',were:'was'}[m]));
+  const wrong2=correct.replace(/\bby [a-z ]+/, 'by people');
+  const passage=`At ${place}, a note says: “${obj} ______ ${time}.” The manager explains that ${agent} did the work.`;
+  const stem='Choose the best passive sentence to complete the note.';
+  const options=shuffle(uniqueByText([
+    {text: correct, why:'Correct BE form for time and number.'},
+    {text: wrong1, why:'BE form does not match time/number.'},
+    {text: wrong2, why:'Agent is too generic for the context.'}
+  ]));
+  return {type:'mc', domain:'readingPassive', prompt:`${stem}\n${passage}`, options, correct, context:'Context: Use passive voice to report the action.'};
+}
+function makeReadingRelative(){
+  const place=pick(['a museum','a school','a park','a café']);
+  const fact=pick(['We met a guide','I saw a boy','They found a shop']);
+  const correctSent = fact==='We met a guide' ? 'We met a guide who speaks Spanish.' :
+                      fact==='I saw a boy' ? 'I saw a boy whose dog is friendly.' :
+                      'They found a shop where coffee is cheap.';
+  const wrong1 = correctSent.replace(/\b(who|whose|where)\b/, m=>({who:'when', whose:'which', where:'when'}[m]||'which'));
+  const wrong2 = correctSent.replace(/\b(who|whose|where)\b/, m=>({who:'which', whose:'who', where:'which'}[m]||'who'));
+  const passage=`During a visit to ${place}, the student writes: “${fact} ___ ...”`;
+  const stem='Choose the option that best completes the note.';
+  const options=shuffle(uniqueByText([
+    {text: correctSent, why:'Correct relative pronoun for the noun.'},
+    {text: wrong1, why:'Wrong relative type (time vs. person/place).'},
+    {text: wrong2, why:'Wrong relative type.'}
+  ]));
+  return {type:'mc', domain:'readingRelative', prompt:`${stem}\n${passage}`, options, correct:correctSent, context:'Context: WHO→person, WHOSE→possession, WHERE→place.'};
+}
+
+function makeMatchingPassive(){
+  const npList=shuffle([ ...sampleUnique(singNP,3), ...sampleUnique(plurNP,3) ]);
+  const chosen=sampleUnique(npList,3);
+  const left=chosen.map((np,i)=>{
+    const isPlural=/s\b/.test(np.toLowerCase()) && !/ss\b/.test(np.toLowerCase());
+    const isPast=Math.random()<0.5;
+    const time=isPast?pick(['yesterday','last week']):pick(['every day','on Mondays']);
+    const text=`${np} — ${time}`;
+    const need=isPast?(isPlural?'WERE (past)':'WAS (past)'):(isPlural?'ARE (present)':'IS (present)');
+    return {id:`L${i}`, text, need};
+  });
+  const right=shuffle(left.map((L,i)=>({id:`R${i}`, text:L.need})));
+  const solution=left.map(L=>({L:L.id, R:right.find(r=>r.text===L.need).id}));
+  return {type:'matchGame', mode:'be', prompt:'Match each noun phrase (with time) to the correct BE form.', left, right, solution, context:'Context: number + time → BE (is/are/was/were).'};
+}
+function makeMatchingRelative(){
+  const triples=shuffle([
+    {L:'a person',R:'WHO'},
+    {L:'a thing',R:'WHICH'},
+    {L:'a place',R:'WHERE'},
+    {L:'a time',R:'WHEN'},
+    {L:'possession',R:'WHOSE'}
+  ]).slice(0,3);
+  const left=triples.map((t,i)=>({id:`L${i}`,text:t.L}));
+  const right=shuffle(triples.map((t,i)=>({id:`R${i}`,text:t.R})));
+  const solution=left.map((_,i)=>({L:`L${i}`,R:`R${i}`}));
+  return {type:'matchGame', mode:'rel', prompt:'Match each concept with the correct relative pronoun.', left, right, solution, context:'Context: WHO→people, WHICH→things, WHERE→places, WHEN→time, WHOSE→possession.'};
+}
+
+const orderPassiveShort=[
+  ()=>`${pick(singNP)} is repaired by ${pick(agents)}.`,
+  ()=>`${pick(plurNP)} are cleaned every week.`,
+  ()=>`${pick(singNP)} is opened at school.`,
+  ()=>`${pick(singNP)} was written yesterday.`,
+  ()=>`${pick(plurNP)} were built in 2010.`,
+  ()=>`${pick(plurNP)} were delivered last week.`
+];
+const orderRelativeShort=[
+  'This is the boy who plays soccer.',
+  'I like the book which is blue.',
+  'This is the park where we play.',
+  'Monday is the day when we meet.',
+  'The boy whose bike is new smiles.'
+];
+const tokenizeSentence=s=>{ const core=s.replace(/[.?]/g,''); const toks=core.split(' '); toks[toks.length-1]+='.'; return toks; };
+const passivePatternOf=sent=>{ const isPast=/ (was|were) /.test(sent); const isPlural=/^[Tt]he [a-z]+s/.test(sent); return `Pattern: NP (${isPlural?'PLURAL':'SINGULAR'}) + ${isPast?'was/were':'is/are'} + Vpp (+ by + agent) (+ time/place)`; };
+function makeOrderPassive(){ const sent=pick(orderPassiveShort)(); const context=/ (was|were) /.test(sent)?'Context: PAST PASSIVE.':'Context: PRESENT PASSIVE.'; const pattern=passivePatternOf(sent); const tokens=shuffle(tokenizeSentence(sent)); return {type:'orderGame',domain:'passive',prompt:'Organize the tokens to form the sentence.',tokens,correct:sent,context,pattern}; }
+function makeOrderRelative(){ const sent=pick(orderRelativeShort); const pron=(sent.match(/\b(who|which|where|when|whose)\b/i)||[''])[0].toUpperCase(); const mapExp={WHO:'people',WHICH:'things',WHERE:'places',WHEN:'time',WHOSE:'possession'}; const context=`Context: ${pron} → ${mapExp[pron]||''}`; const tokens=shuffle(tokenizeSentence(sent)); return {type:'orderGame',domain:'relative',prompt:'Organize the tokens to form the sentence.',tokens,correct:sent,context,pattern:'Pattern: Head noun + relative pronoun + clause'}; }
+
+function buildBank(){
+  const items=[];
+  while(items.length<90){
+    const mod = items.length % 9;
+    if(mod===0) items.push(makeUniqueMC(makePassiveMC));
+    else if(mod===1) items.push(makeUniqueMC(makeRelativeMC));
+    else if(mod===2) items.push(makeMatchingPassive());
+    else if(mod===3) items.push(makeMatchingRelative());
+    else if(mod===4) items.push(makeOrderPassive());
+    else if(mod===5) items.push(makeOrderRelative());
+    else if(mod===6) items.push(makeUniqueMC(makeReadingPassive));
+    else if(mod===7) items.push(makeUniqueMC(makeReadingRelative));
+    else items.push(makeUniqueMC(makePassiveMC));
+  }
+  return items;
+}
+const BANK = buildBank();
+
+const TOTAL=30;
+let current=0,picked=[],correctCount=0,locked=false,isRunning=false,securityArmed=false;
+const qEl=document.getElementById('question'), ctxEl=document.getElementById('contextLine'), patEl=document.getElementById('patternLine'), optEl=document.getElementById('options'), fbEl=document.getElementById('feedback'), progEl=document.getElementById('progress'), finalLayer=document.getElementById('final'), finalScore=document.getElementById('finalScore'), guideEl=document.getElementById('guide');
+
+const pickRandomSet=()=>shuffle([...BANK]).slice(0,TOTAL);
+const updateProgress=()=>{ const pct=(current/TOTAL)*100; progEl.style.width=pct+'%'; };
+
+function resetToStart(){
+  isRunning=false; securityArmed=false; current=0; correctCount=0; picked=[]; locked=false;
+  progEl.style.width='0%'; fbEl.textContent=''; finalLayer.style.display='none';
+  qEl.textContent='Press “Start” to begin.'; ctxEl.textContent=''; patEl.textContent='';
+  guideEl.textContent='Select, match, or build. Use the Context strip when needed.';
+  optEl.innerHTML='<button id="startBtn" class="btn" onclick="startQuiz()" role="button" tabindex="0" aria-label="Start the quiz">Start</button>';
+}
+
+function renderQuestion(){
+  updateProgress(); fbEl.textContent=''; const item=picked[current]; optEl.innerHTML='';
+  ctxEl.textContent=item.context||''; patEl.textContent=item.type==='orderGame'?(item.pattern||''):''; qEl.textContent=item.prompt;
+
+  if(item.type==='mc'){
+    const options=shuffle([...item.options]);
+    const correctIdx=options.findIndex(o=>o.text===item.correct);
+    options.forEach((obj, idx)=>{ const b=document.createElement('button'); b.className='btn'; b.textContent=obj.text;
+      b.onclick=()=>handleAnswer(idx===correctIdx, item.correct, obj.why);
+      optEl.appendChild(b);
+    });
+  } else if(item.type==='matchGame'){
+    guideEl.textContent = item.mode==='be'
+      ? 'Instruction: tap a Noun Phrase (with time), then the correct BE form. Pairs disappear.'
+      : 'Instruction: tap a Concept, then the correct relative pronoun. Pairs disappear.';
+    const wrap=document.createElement('div'); wrap.className='grid-2';
+    const left=document.createElement('div'); left.className='colBox'; left.innerHTML='<b>Left</b><br>';
+    const right=document.createElement('div'); right.className='colBox'; right.innerHTML='<b>Right</b><br>';
+    const pairArea=document.createElement('div'); pairArea.className='pairArea'; pairArea.textContent='Pairs:';
+    const timer=document.createElement('div'); timer.className='timer'; timer.textContent='⏱ 0.0 s';
+    let selectedL=null; const usedL=new Set(), usedR=new Set(), pairs=[];
+    const leftDisplay=shuffle(item.left.map(x=>({...x}))); const rightDisplay=shuffle(item.right.map(x=>({...x})));
+    const updatePairArea=()=>{ pairArea.innerHTML=''; pairs.forEach(p=>{ const tag=document.createElement('span'); tag.className='pairTag'; tag.textContent=`${p.Ltext} — ${p.Rtext}`; pairArea.appendChild(tag); }); };
+    const removeNode=n=>{ if(n&&n.parentNode) n.parentNode.removeChild(n); };
+    leftDisplay.forEach(obj=>{ const c=document.createElement('span'); c.className='chip'; c.textContent=obj.text; c.dataset.id=obj.id;
+      c.onclick=()=>{ if(usedL.has(obj.id)) return; document.querySelectorAll('.chip.sel').forEach(x=>x.classList.remove('sel')); c.classList.add('sel'); selectedL=obj; };
+      left.appendChild(c); obj._node=c; });
+    rightDisplay.forEach(obj=>{ const c=document.createElement('span'); c.className='chip'; c.textContent=obj.text; c.dataset.id=obj.id;
+      const choose=()=>{ if(!selectedL) return; if(usedL.has(selectedL.id)||usedR.has(obj.id)) return;
+        pairs.push({L:selectedL.id,Ltext:selectedL.text,R:obj.id,Rtext:obj.text});
+        usedL.add(selectedL.id); usedR.add(obj.id); removeNode(selectedL._node); removeNode(c);
+        document.querySelectorAll('.chip.sel').forEach(x=>x.classList.remove('sel')); selectedL=null; updatePairArea();
+        if(pairs.length===item.left.length){
+          const ok=item.solution.every(sol=>pairs.find(p=>p.L===sol.L&&p.R===sol.R));
+          const t=(performance.now()-window._matchStart)/1000; const bestKey='bestMatch_v6_10'; const best=Number(localStorage.getItem(bestKey)||'0'); if(ok&&(best===0||t<best)) localStorage.setItem(bestKey,String(t));
+          const bNum=Number(localStorage.getItem(bestKey)||'0'); timer.textContent=`⏱ ${t.toFixed(1)} s • Best: ${bNum?bNum.toFixed(1)+' s':'—'}`;
+          const solutionText=item.left.map(L=>{ const sid=(item.solution.find(s=>s.L===L.id)||{}).R; const rightObj=item.right.find(r=>r.id===sid); return `${L.text} — ${rightObj?rightObj.text:'—'}`; }).join(' | ');
+          const why= ok ? 'All pairs follow number and time clues.' : 'Use the time clue + number to select BE.';
+          handleAnswer(ok, solutionText, why);
+        } };
+      c.onclick=choose;
+      right.appendChild(c); obj._node=c; });
+    wrap.appendChild(left); wrap.appendChild(right);
+    optEl.appendChild(wrap); optEl.appendChild(pairArea); optEl.appendChild(timer);
+    window._matchStart=performance.now();
+  } else if(item.type==='orderGame'){
+    guideEl.textContent='Instruction: tap tokens to build the sentence.';
+    const build=document.createElement('div'); build.className='buildArea';
+    const pool=document.createElement('div'); pool.className='poolArea';
+    const controls=document.createElement('div'); controls.className='controls';
+    const undoBtn=document.createElement('button'); undoBtn.className='smallBtn'; undoBtn.textContent='Undo';
+    const resetBtn=document.createElement('button'); resetBtn.className='smallBtn'; resetBtn.textContent='Reset';
+    let built=[], localPool=shuffle([...item.tokens]);
+    const renderPool=()=>{ pool.innerHTML=''; localPool.forEach((tok,idx)=>{ if(built.includes(idx)) return; const t=document.createElement('span'); t.className='token'; t.textContent=tok;
+      t.onclick=()=>{ built.push(idx); renderBuild(); renderPool(); checkFinish(); };
+      pool.appendChild(t); }); };
+    const renderBuild=()=>{ build.innerHTML=''; built.forEach(i=>{ const t=document.createElement('span'); t.className='token'; t.textContent=localPool[i]; build.appendChild(t); }); };
+    const undo=()=>{ built.pop(); renderBuild(); renderPool(); };
+    const reset=()=>{ built=[]; localPool=shuffle([...item.tokens]); renderBuild(); renderPool(); };
+    const checkFinish=()=>{ if(built.length===item.tokens.length){ const made=built.map(i=>localPool[i]).join(' ').replace(/\s+\.\s*/g,'.'); const why=item.domain==='passive'?'Passive: NP + BE + Vpp (+ by + agent/time).':'Relative: head noun + relative pronoun + clause.'; handleAnswer(made===item.correct, item.correct, why); } };
+    undoBtn.onclick=undo; resetBtn.onclick=reset;
+    renderPool(); renderBuild();
+    optEl.appendChild(build); optEl.appendChild(pool); optEl.appendChild(controls);
+    controls.appendChild(undoBtn); controls.appendChild(resetBtn);
+  }
+}
+
+function handleAnswer(ok, correctText, whyText=''){
+  if(locked) return; locked=true;
+  if(ok){ correctCount++; fbEl.innerHTML='<span class="ok">✅ Correct!</span>'+(whyText?`<div class="why">${whyText}</div>`:''); }
+  else{ fbEl.innerHTML='<span class="bad">❌ Incorrect!</span>'+(whyText?`<div class="why">${whyText}</div>`:'')+(correctText?`<div class="correctShow">Correct: ${correctText}</div>`:''); }
+  setTimeout(()=>{ current++; if(current>=TOTAL){ finish(); } else { locked=false; renderQuestion(); } },1500);
+}
+function finish(){
+  isRunning=false; securityArmed=false; document.getElementById('progress').style.width='100%';
+  const grade=Math.round((1+(correctCount/TOTAL)*4)*10)/10;
+  finalScore.textContent=`Your final score is ${grade.toFixed(1)} / 5.0`;
+  finalLayer.style.display='flex'; qEl.textContent='Quiz finished.'; optEl.innerHTML=''; fbEl.textContent='';
+}
+function startQuiz(){
+  try{
+    isRunning=true; securityArmed=false; current=0; correctCount=0; picked=pickRandomSet(); locked=false; finalLayer.style.display='none';
+    guideEl.textContent='Loading question…'; renderQuestion(); setTimeout(()=>{ securityArmed=true; },1500);
+  }catch(err){
+    alert('Init error: '+err.message);
+  }
+}
+window.startQuiz=startQuiz; // expose globally for onclick
+
+// Security (unchanged)
+const overlay=document.getElementById('securityOverlay'); let lastW=innerWidth,lastH=innerHeight,resizeTimer=null;
+function showSecurity(msg){ if(!(isRunning&&securityArmed)) return; overlay.textContent=`⚠️ ${msg} Quiz restarted.`; overlay.style.display='flex'; document.getElementById('card').style.filter='brightness(0)'; setTimeout(()=>{ overlay.style.display='none'; document.getElementById('card').style.filter=''; resetToStart(); },2500); }
+addEventListener('keydown',e=>{ if(!(isRunning&&securityArmed)) return; const key=(e.key||'').toLowerCase(); if(key==='printscreen'||key==='f12'||(e.ctrlKey&&(key==='s'||key==='u'||key==='c'||key==='p'))){ e.preventDefault(); e.stopPropagation(); showSecurity('Security Alert: Screenshot/Inspect detected!'); } },{capture:true});
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) showSecurity('Security Alert: Focus lost!'); });
+addEventListener('blur',()=>{ showSecurity('Security Alert: App minimization detected!'); });
+addEventListener('pagehide',()=>{ showSecurity('Security Alert: Focus lost!'); });
+addEventListener('resize',()=>{ if(!(isRunning&&securityArmed)) return; clearTimeout(resizeTimer); resizeTimer=setTimeout(()=>{ const dw=Math.abs(innerWidth-lastW), dh=Math.abs(innerHeight-lastH); lastW=innerWidth; lastH=innerHeight; if(dw>240||dh>240) showSecurity('Security Alert: Screen split detected!'); },120); });
+
+// Ready state: ensure Start visible always
+function init(){ resetToStart(); }
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else { init(); }
+
+})(); // end IIFE
+</script>
+</body>
+</html>
